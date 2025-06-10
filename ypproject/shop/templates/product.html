@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Товары{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; padding: 0;
+            line-height: 1.6;
+            background-color: #fff;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        nav {
+            background-color: #f4f4f4;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        nav a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: #333;
+            font-weight: normal;
+        }
+        nav a:hover {
+            color: #007BFF;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 0 1rem;
+        }
+        .dropbtn {
+            cursor: pointer;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 0;
+            top: 100%;
+            left: 0;
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .product-list {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+        }
+        .product-item {
+            border-bottom: 1px solid #ccc;
+            padding: 1rem 0;
+        }
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        .product-item h3 {
+            margin: 0 0 0.5rem 0;
+        }
+        .product-item p.description {
+            margin: 0 0 0.5rem 0;
+            color: #555;
+        }
+        .product-item p.price {
+            font-weight: bold;
+            color: #007BFF;
+            margin: 0;
+        }
+        a.details-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a.details-link:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Товары</h1>
+    </header>
+
+    <nav>
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'second_view' %}">О нас</a>
+        <a href="{% url 'third_view' %}">Контакты</a>
+        <a href="{% url 'map_view' %}">Как нас найти</a>
+
+        <div class="dropdown">
+            <a href="{% url 'product_view' %}" class="dropbtn">Товары</a>
+            <div class="dropdown-content">
+                {% if categories %}
+                    {% for category in categories %}
+                        <a href="{% url 'category_detail' category.id %}">{{ category.name }}</a>
+                    {% endfor %}
+                {% else %}
+                    <a href="{% url 'category_detail' 1 %}">Свадебный букет</a>
+                    <a href="{% url 'category_detail' 2 %}">Сладкий букет</a>
+                    <a href="{% url 'category_detail' 3 %}">Классика</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <a href="{% url 'basket_view' %}">Корзина</a>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        <div class="product-list">
+            {% if products %}
+                {% for product in products %}
+                    <div class="product-item">
+                        <h3>{{ product.name }}</h3>
+                        <p class="description">{{ product.description|truncatechars:150 }}</p>
+                        <p class="price">{{ product.price }} ₽</p>
+                        <a class="details-link" href="{% url 'product_detail' product.id %}">Подробнее</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Товары отсутствуют.</p>
+            {% endif %}
+        </div>
+        {% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; {% now "Y" %} Мой сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>

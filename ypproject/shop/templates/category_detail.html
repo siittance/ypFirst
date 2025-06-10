@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ category_name }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; }
+        h1 { color: #333; }
+        a { text-decoration: none; color: #333; }
+    </style>
+</head>
+<body>
+    <h1>{{ category_name }}</h1>
+    <p>Здесь информация о выбранной категории.</p>
+    <p><a href="{% url 'product_view' %}">Назад к товарам</a></p>
+</body>
+</html>

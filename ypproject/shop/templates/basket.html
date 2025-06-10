@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Корзина{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        nav {
+            background-color: #f4f4f4;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        nav a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: #333;
+            font-weight: normal;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 0 1rem;
+        }
+        .dropbtn {
+            cursor: pointer;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 0;
+            top: 100%;
+            left: 0;
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .basket-item {
+            border-bottom: 1px solid #ccc;
+            padding: 1rem 0;
+        }
+        .basket-item:last-child {
+            border-bottom: none;
+        }
+        .basket-total {
+            margin-top: 2rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ваша корзина</h1>
+    </header>
+
+    <nav>
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'second_view' %}">О нас</a>
+        <a href="{% url 'third_view' %}">Контакты</a>
+        <a href="{% url 'map_view' %}">Как нас найти</a>
+
+        <div class="dropdown">
+            <a href="{% url 'product_view' %}" class="dropbtn">Товары</a>
+            <div class="dropdown-content">
+                {% if categories %}
+                    {% for category in categories %}
+                        <a href="{% url 'category_detail' category.id %}">{{ category.name }}</a>
+                    {% endfor %}
+                {% else %}
+                    <a href="{% url 'category_detail' 1 %}">Свадебный букет</a>
+                    <a href="{% url 'category_detail' 2 %}">Сладкий букет</a>
+                    <a href="{% url 'category_detail' 3 %}">Классика</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <a href="{% url 'basket_view' %}">Корзина</a>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        <h2>Товары в корзине</h2>
+
+        {% if basket_items %}
+            {% for item in basket_items %}
+                <div class="basket-item">
+                    <p><strong>{{ item.product.name }}</strong></p>
+                    <p>Цена: {{ item.product.price }} руб.</p>
+                    <p>Количество: {{ item.quantity }}</p>
+                    <p>Итого: {{ item.quantity|floatformat:2|add:item.product.price|floatformat:2 }} руб.</p>
+                </div>
+            {% endfor %}
+
+            <div class="basket-total">
+                Общая сумма: {{ total_price }} руб.
+            </div>
+        {% else %}
+            <p>Ваша корзина пуста.</p>
+        {% endif %}
+        {% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; {% now "Y" %} Мой сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>

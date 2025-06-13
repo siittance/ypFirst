@@ -1,75 +1,15 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Контакты{% endblock %}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-        }
-        nav {
-            background-color: #f4f4f4;
-            padding: 1rem;
-        }
-        nav a {
-            margin: 0 1rem;
-            text-decoration: none;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Контакты</h1>
-    </header>
+{% extends 'base.html' %}
 
-    <nav>
-        <a href="{% url 'home' %}">Главная</a>
-        <a href="{% url 'second_view' %}">О нас</a>
-        <a href="{% url 'third_view' %}">Контакты</a>
-        <a href="{% url 'map_view' %}">Как нас найти</a>
-        <a href="{% url 'product_view' %}">Товары</a>
-        <a href="{% url 'basket_view' %}">Корзина</a>
-    </nav>
+{% block title %}Контакты{% endblock %}
 
-    <div class="container">
-        {% block content %}
-        <h2>Свяжитесь с нами</h2>
-        <p>Если у вас есть вопросы или предложения, пожалуйста, свяжитесь с нами:</p>
-        <ul>
-            <li>Телефон: Тут мог быть ваш номер телефона</li>
-            <li>Email: info@example.com</li>
-            <li>Адрес: г. Москва, ул. Примерная, д. 1</li>
-        </ul>
-        {% endblock %}
-    </div>
-
-    <footer>
-        <p>&copy; {% now "Y" %} Мой сайт. Все права защищены.</p>
-    </footer>
-</body>
-</html>
+{% block content %}
+<h2>Свяжитесь с нами</h2>
+<div class="product-list">
+    <p>Если у вас есть вопросы или предложения, пожалуйста, свяжитесь с нами:</p>
+    <ul>
+        <li>Телефон: Тут мог быть ваш номер телефона</li>
+        <li>Email: info@example.com</li>
+        <li>Адрес: г. Москва, ул. Примерная, д. 1</li>
+    </ul>
+</div>
+{% endblock %}

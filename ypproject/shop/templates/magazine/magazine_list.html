@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Список магазинов{% endblock %}
+
+{% block content %}
+<h1>Магазины</h1>
+<a href="{% url 'magazine_create' %}" class="btn btn-primary">Создать магазин</a>
+<ul>
+    {% if magazines %}
+        {% for magazine in magazines %}
+            <li>
+                <a href="{% url 'magazine_detail' magazine.pk %}">{{ magazine.name|default:"[No name]" }}</a>
+                (<a href="{% url 'magazine_update' magazine.pk %}">Редактировать</a> |
+                <a href="{% url 'magazine_delete' magazine.pk %}">Удалить</a>)
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>Магазинов нет.</li>
+    {% endif %}
+</ul>
+{% endblock %}

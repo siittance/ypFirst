@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.product_name }}{% endblock %}
+
+{% block content %}
+<h2>{{ product.product_name }}</h2>
+<div class="product-list">
+    <p><strong>Описание:</strong> {{ product.product_description|default:"Нет описания" }}</p>
+    <p><strong>Цена:</strong> {{ product.product_price }} ₽</p>
+    <p><strong>Количество:</strong> {{ product.quantity }}</p>
+    <p><strong>Категория:</strong> {{ product.product_category }}</p>
+    <p><strong>Магазин:</strong> {{ product.magazine }}</p>
+    {% if product.image %}
+        <p><strong>Изображение:</strong><br><img src="{{ product.image.url }}" alt="{{ product.product_name }}" style="max-width: 200px;"></p>
+    {% endif %}
+    <a href="{% url 'product_view' %}" class="details-link">Назад к товарам</a>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление позиции заказа #{{  pos_order.pk }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card border-danger">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-exclamation-triangle"></i> Подтверждение удаления
+            </h3>
+        </div>
+        <div class="card-body">
+            <h4>Вы уверены, что хотите удалить эту позицию из заказа?</h4>
+            <p class="text-muted">Это действие нельзя отменить. Сумма заказа будет пересчитана автоматически.</p>
+            
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Информация о позиции:</h5>
+                    <p><strong>Товар:</strong> {{  pos_order.catalog.product_name }}</p>
+                    <p><strong>Количество:</strong> {{  pos_order.count }}</p>
+                    <p><strong>Сумма:</strong> {{  pos_order.get_total_price }} ₽</p>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Да, удалить
+                    </button>
+                    <a href="{% url 'pos_order_detail'  pos_order.pk %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Отмена
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% load static %}
+<header>Florence</header>
+
+<nav>
+    <a href="{% url 'home' %}">Главная</a>
+    <a href="{% url 'second_view' %}">О нас</a>
+    <a href="{% url 'third_view' %}">Контакты</a>
+    <a href="{% url 'map_view' %}">Как нас найти</a>
+    <div class="dropdown">
+        <a href="{% url 'product_view' %}" class="dropbtn">Товары</a>
+        <div class="dropdown-content">
+            {% for category in categories %}
+                <a href="{% url 'category_detail' category.id %}">{{ category.category_name }}</a>
+            {% empty %}
+                <a href="#">Нет категорий</a>
+            {% endfor %}
+        </div>
+    </div>
+    <a href="{% url 'basket_view' %}">Корзина</a>
+    <div class="dropdown">
+        <span class="dropbtn">CRUD</span>
+        <div class="dropdown-content">
+            <a href="{% url 'user_list' %}">Пользователи</a>
+            <a href="{% url 'product_category_list' %}">Категории</a>
+            <a href="{% url 'magazine_list' %}">Магазины</a>
+            <a href="{% url 'catalog_list' %}">Товары</a>
+            <a href="{% url 'order_list' %}">Заказы</a>
+            <a href="{% url 'pos_order_list' %}">Позиции заказов</a>
+            <a href="{% url 'cart_list' %}">Корзины</a>
+            <a href="{% url 'review_list' %}">Отзывы</a>
+            <a href="{% url 'promotion_list' %}">Акции</a>
+        </div>
+    </div>
+</nav>

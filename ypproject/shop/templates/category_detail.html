@@ -1,17 +1,21 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8" />
-    <title>{{ category_name }}</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 2rem; }
-        h1 { color: #333; }
-        a { text-decoration: none; color: #333; }
-    </style>
-</head>
-<body>
-    <h1>{{ category_name }}</h1>
-    <p>Здесь информация о выбранной категории.</p>
-    <p><a href="{% url 'product_view' %}">Назад к товарам</a></p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}{{ category_name }}{% endblock %}
+
+{% block content %}
+<h2>{{ category_name }}</h2>
+<div class="product-list">
+    {% if products %}
+        {% for product in products %}
+            <div class="product-item">
+                <h3>{{ product.product_name }}</h3>
+                <p class="description">{{ product.product_description|truncatechars:150|default:"Нет описания" }}</p>
+                <p class="price">{{ product.product_price }} ₽</p>
+                <a class="details-link" href="{% url 'product_detail' product.pk %}">Подробнее</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Товары отсутствуют.</p>
+    {% endif %}
+</div>
+{% endblock %}

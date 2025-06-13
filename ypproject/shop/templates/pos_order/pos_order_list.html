@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Позиции заказов{% endblock %}
+
+{% block content %}
+<h2>Позиции заказов</h2>
+<a href="{% url 'pos_order_create' %}" class="btn btn-primary">Добавить позицию</a>
+<div class="pos_order-list">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Заказ</th>
+                <th>Количество</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for posorder in posorders %}
+                <tr>
+                    <td>{{ posorder.catalog }}</td>
+                    <td>Заказ №{{ posorder.order.order_number }}</td>
+                    <td>{{ posorder.count }}</td>
+                    <td>
+                        <a href="{% url 'pos_order_detail' pos_order.pk %}" class="btn btn-primary">Просмотр</a>
+                        <a href="{% url 'pos_order_update' pos_order.pk %}" class="btn btn-secondary">Редактировать</a>
+                        <a href="{% url 'pos_order_delete' pos_order.pk %}" class="btn btn-danger">Удалить</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Нет позиций заказов.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

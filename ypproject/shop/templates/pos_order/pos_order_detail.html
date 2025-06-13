@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Детали позиции заказа{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Детали позиции заказа</h2>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Заказ:</strong> {{ pos_order.order }}</p>
+            <p><strong>Товар:</strong> {{ pos_order.catalog }}</p>
+            <p><strong>Количество:</strong> {{ pos_order.count }}</p>
+            <a href="{% url 'pos_order_update' pos_order.pk %}" class="btn btn-primary">Редактировать</a>
+            <a href="{% url 'pos_order_list' %}" class="btn btn-secondary">Назад к списку</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

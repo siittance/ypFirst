@@ -1,3 +1,89 @@
 from django.db import models
 
-# Create your models here.
+class User(models.Model):
+    user_login = models.CharField(max_length=25)
+    user_password = models.CharField(max_length=350)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=11, unique=True)
+
+    def __str__(self):
+        return self.user_login
+
+
+class ProductCategory(models.Model):
+    category_name = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.category_name
+
+
+class Magazine(models.Model):
+    name_magazine = models.CharField(max_length=25)
+    address_magazine = models.CharField(max_length=60)
+
+    def __str__(self):
+        return self.name_magazine
+
+
+class Catalog(models.Model):
+    product_name = models.CharField(max_length=25)
+    product_description = models.CharField(max_length=100, blank=True, null=True)
+    product_price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='catalog_images/')
+    quantity = models.IntegerField()
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
+    magazine = models.ForeignKey(Magazine, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.product_name
+
+
+class Order(models.Model):
+    order_number = models.IntegerField(unique=True)
+    sum_bill = models.DecimalField(max_digits=10, decimal_places=2)
+    date_order = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Order #{self.order_number}"
+
+
+class PosOrder(models.Model):
+    catalog = models.ForeignKey(Catalog, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    count = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.catalog} x {self.count}"
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    catalog = models.ForeignKey(Catalog, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.catalog} in cart"
+
+
+class Review(models.Model):
+    rating = models.IntegerField()
+    review_text = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    catalog = models.ForeignKey(Catalog, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Review by {self.user} - {self.rating}/5"
+
+class Promotion(models.Model):
+    title = models.CharField(max_length=50)
+    description = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to='promotions/')
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    def __str__(self):
+        return self.title
+

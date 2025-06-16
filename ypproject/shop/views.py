@@ -5,11 +5,11 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import User, ProductCategory, Magazine, Catalog, Order, PosOrder, Cart, Review, Promotion
 from .forms import UserForm, ProductCategoryForm, MagazineForm, CatalogForm, OrderForm, PosOrderForm, CartForm, ReviewForm, PromotionForm
 
-# Non-CRUD Views (kept as function-based views for simplicity)
 def first_view(request):
     products = Catalog.objects.all()
     categories = ProductCategory.objects.all()
-    return render(request, 'first.html', {'products': products, 'categories': categories})
+    promotions = Promotion.objects.all()
+    return render(request, 'first.html', {'products': products, 'categories': categories, 'promotions': promotions})
 
 def second_view(request):
     categories = ProductCategory.objects.all()
@@ -34,7 +34,6 @@ def basket_view(request):
     categories = ProductCategory.objects.all()
     return render(request, 'basket.html', {'cart_items': cart_items, 'total_price': total_price, 'categories': categories})
 
-# Category Detail (converted to DetailView)
 class CategoryDetailView(DetailView):
     model = ProductCategory
     template_name = 'category_detail.html'
@@ -47,7 +46,6 @@ class CategoryDetailView(DetailView):
         context['categories'] = ProductCategory.objects.all()
         return context
 
-# Product Detail (converted to DetailView)
 class ProductDetailView(DetailView):
     model = Catalog
     template_name = 'product_detail.html'
@@ -58,7 +56,6 @@ class ProductDetailView(DetailView):
         context['categories'] = ProductCategory.objects.all()
         return context
 
-# CRUD Views for User
 class UserListView(ListView):
     model = User
     template_name = 'user/user_list.html'
@@ -110,7 +107,6 @@ class UserDeleteView(DeleteView):
         messages.success(self.request, 'Пользователь успешно удален!')
         return response
 
-# CRUD Views for ProductCategory
 class ProductCategoryListView(ListView):
     model = ProductCategory
     template_name = 'product_category/product_category_list.html'
@@ -162,7 +158,6 @@ class ProductCategoryDeleteView(DeleteView):
         messages.success(self.request, 'Категория успешно удалена!')
         return response
 
-# CRUD Views for Magazine
 class MagazineListView(ListView):
     model = Magazine
     template_name = 'magazine/magazine_list.html'
@@ -214,7 +209,6 @@ class MagazineDeleteView(DeleteView):
         messages.success(self.request, 'Магазин успешно удален!')
         return response
 
-# CRUD Views for Catalog
 class CatalogListView(ListView):
     model = Catalog
     template_name = 'catalog/catalog_list.html'
@@ -266,7 +260,6 @@ class CatalogDeleteView(DeleteView):
         messages.success(self.request, 'Товар успешно удален!')
         return response
 
-# CRUD Views for Order
 class OrderListView(ListView):
     model = Order
     template_name = 'order/order_list.html'
@@ -318,7 +311,6 @@ class OrderDeleteView(DeleteView):
         messages.success(self.request, 'Заказ успешно удален!')
         return response
 
-# CRUD Views for PosOrder
 class PosOrderListView(ListView):
     model = PosOrder
     template_name = 'pos_order/pos_order_list.html'
@@ -370,7 +362,6 @@ class PosOrderDeleteView(DeleteView):
         messages.success(self.request, 'Позиция заказа успешно удалена!')
         return response
 
-# CRUD Views for Cart
 class CartListView(ListView):
     model = Cart
     template_name = 'cart/cart_list.html'
@@ -422,7 +413,6 @@ class CartDeleteView(DeleteView):
         messages.success(self.request, 'Корзина успешно удалена!')
         return response
 
-# CRUD Views for Review
 class ReviewListView(ListView):
     model = Review
     template_name = 'review/review_list.html'
@@ -474,7 +464,6 @@ class ReviewDeleteView(DeleteView):
         messages.success(self.request, 'Отзыв успешно удален!')
         return response
 
-# CRUD Views for Promotion
 class PromotionListView(ListView):
     model = Promotion
     template_name = 'promotion/promotion_list.html'

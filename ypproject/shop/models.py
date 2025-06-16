@@ -9,6 +9,10 @@ class User(models.Model):
     def __str__(self):
         return self.user_login
 
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+        ordering = ['user_login']
 
 class ProductCategory(models.Model):
     category_name = models.CharField(max_length=25)
@@ -16,6 +20,10 @@ class ProductCategory(models.Model):
     def __str__(self):
         return self.category_name
 
+    class Meta:
+        verbose_name = 'Категория продукта'
+        verbose_name_plural = 'Категории продуктов'
+        ordering = ['category_name']
 
 class Magazine(models.Model):
     name_magazine = models.CharField(max_length=25)
@@ -24,6 +32,10 @@ class Magazine(models.Model):
     def __str__(self):
         return self.name_magazine
 
+    class Meta:
+        verbose_name = 'Магазин'
+        verbose_name_plural = 'Магазины'
+        ordering = ['name_magazine']
 
 class Catalog(models.Model):
     product_name = models.CharField(max_length=25)
@@ -37,6 +49,10 @@ class Catalog(models.Model):
     def __str__(self):
         return self.product_name
 
+    class Meta:
+        verbose_name = 'Каталог'
+        verbose_name_plural = 'Каталоги'
+        ordering = ['product_name']
 
 class Order(models.Model):
     order_number = models.IntegerField(unique=True)
@@ -47,6 +63,10 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.order_number}"
 
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+        ordering = ['-date_order']
 
 class PosOrder(models.Model):
     catalog = models.ForeignKey(Catalog, on_delete=models.CASCADE)
@@ -56,6 +76,10 @@ class PosOrder(models.Model):
     def __str__(self):
         return f"{self.catalog} x {self.count}"
 
+    class Meta:
+        verbose_name = 'Позиция заказа'
+        verbose_name_plural = 'Позиции заказа'
+        ordering = ['order']
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -66,6 +90,10 @@ class Cart(models.Model):
     def __str__(self):
         return f"{self.catalog} in cart"
 
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'
+        ordering = ['user']
 
 class Review(models.Model):
     rating = models.IntegerField()
@@ -77,6 +105,11 @@ class Review(models.Model):
     def __str__(self):
         return f"Review by {self.user} - {self.rating}/5"
 
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+        ordering = ['-created_at']
+
 class Promotion(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField(blank=True, null=True)
@@ -87,3 +120,7 @@ class Promotion(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'Акция'
+        verbose_name_plural = 'Акции'
+        ordering = ['start_date']

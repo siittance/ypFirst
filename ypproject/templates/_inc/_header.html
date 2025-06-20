@@ -17,6 +17,9 @@
         </div>
     </div>
     <a href="{% url 'basket_detail' %}">Корзина</a>
+
+    <!-- Показываем CRUD только админам -->
+    {% if user.is_superuser %}
     <div class="dropdown">
         <span class="dropbtn">CRUD</span>
         <div class="dropdown-content">
@@ -29,8 +32,8 @@
             <a href="{% url 'promotion_list' %}">Акции</a>
         </div>
     </div>
+    {% endif %}
 
-    <!-- Добавленные кнопки авторизации/регистрации/выхода -->
     <div class="auth-buttons">
         {% if user.is_authenticated %}
             <a href="{% url 'logout_user' %}" class="auth-btn">Выйти</a>
@@ -42,7 +45,6 @@
 </nav>
 
 <style>
-    /* Стили для кнопок авторизации */
     .auth-buttons {
         display: inline-block;
         margin-left: 20px;
@@ -62,7 +64,6 @@
         background-color: #45a049;
     }
 
-    /* Стили для выпадающих меню (если нужно) */
     .dropdown {
         position: relative;
         display: inline-block;

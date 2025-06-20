@@ -25,17 +25,18 @@ class Basket:
             item['total_price'] = item['product_price'] * item['count']
             yield item
 
-    # Добавил update_count с дефолтом False
     def add(self, catalog_obj, count=1, update_count=False):
         product_id = str(catalog_obj.id)
+        if product_id not in self.basket and count <= 0:
+            return  # Не добавляем, если количество <= 0 и товара нет в корзине
         if product_id in self.basket:
             if update_count:
-                self.basket[product_id]['count'] = count
+                self.basket[product_id]['count'] = max(1, count)  # Минимальное значение 1
             else:
-                self.basket[product_id]['count'] += count
+                self.basket[product_id]['count'] += max(0, count)  # Убеждаемся, что добавляем только положительное число
         else:
             self.basket[product_id] = {
-                'count': count,
+                'count': max(1, count),
                 'product_price': str(catalog_obj.product_price),
             }
         self.save()

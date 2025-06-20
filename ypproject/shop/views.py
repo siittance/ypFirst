@@ -70,8 +70,6 @@ class UserDetailView(DetailView):
     template_name = 'user/user_detail.html'
     context_object_name = 'user'
 
-
-
 class ProductCategoryListView(ListView):
     model = ProductCategory
     template_name = 'product_category/product_category_list.html'

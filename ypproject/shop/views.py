@@ -487,7 +487,7 @@ def login_user(request):
             login(request, form.get_user())
             if request.GET.get('next'):
                 return redirect(request.GET.get('next'))
-            return redirect('catalog_product_list_view')
+            return redirect('product_view')
     else:
         form = LoginForm()
     return render(request, 'auth/login.html', context={'form': form})
@@ -500,11 +500,11 @@ def registration_user(request):
             login(request, form.save())
             if request.GET.get('next'):
                 return redirect(request.GET.get('next'))
-            return redirect('catalog_product_list_view')
+            return redirect('product_view')
     else:
         form = RegistrationForm()
     return render(request, 'auth/registration.html', context={'form': form})
 
 def logout_user(request):
     logout(request)
-    return redirect('catalog_product_list_view')
+    return redirect('product_view')

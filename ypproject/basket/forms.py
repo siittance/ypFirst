@@ -1,21 +1,23 @@
 from django import forms
-from shop.models import Order
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from shop.models import (
+    ProductCategory, Magazine, Catalog,
+    Order, PosOrder, Cart, Review, Promotion
+)
 
 class BasketAddProductForm(forms.Form):
     count = forms.IntegerField(
         min_value=1,
         initial=1,
         label='Количество',
-        widget=forms.NumberInput(attrs={
-            'class': 'w-full p-2 rounded-md bg-white text-black border border-orange-500 focus:border-orange-400 focus:ring focus:ring-orange-400 focus:ring-opacity-50',
-            'style': 'height: 2.75rem; box-sizing: border-box;'
-        })
     )
     reload = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
 
 class OrderForm(forms.ModelForm):
     buyer_surname = forms.CharField(
         label='Фамилия',
+        required=True,
         widget=forms.TextInput(attrs={
             'class': 'w-full p-2 rounded-md bg-white text-black border border-orange-500 focus:border-orange-400 focus:ring focus:ring-orange-400 focus:ring-opacity-50',
             'style': 'height: 2.75rem; box-sizing: border-box;'
@@ -23,6 +25,7 @@ class OrderForm(forms.ModelForm):
     )
     buyer_name = forms.CharField(
         label='Имя',
+        required=True,
         widget=forms.TextInput(attrs={
             'class': 'w-full p-2 rounded-md bg-white text-black border border-orange-500 focus:border-orange-400 focus:ring focus:ring-orange-400 focus:ring-opacity-50',
             'style': 'height: 2.75rem; box-sizing: border-box;'
@@ -41,11 +44,13 @@ class OrderForm(forms.ModelForm):
         required=False,
         widget=forms.Textarea(attrs={
             'class': 'w-full p-2 rounded-md bg-white text-black border border-orange-500 focus:border-orange-400 focus:ring focus:ring-orange-400 focus:ring-opacity-50',
-            'style': 'height: 6rem; box-sizing: border-box;'
+            'style': 'height: 6rem; box-sizing: border-box;',
+            'rows': 3
         })
     )
     delivery_address = forms.CharField(
         label='Адрес доставки',
+        required=True,
         widget=forms.TextInput(attrs={
             'class': 'w-full p-2 rounded-md bg-white text-black border border-orange-500 focus:border-orange-400 focus:ring focus:ring-orange-400 focus:ring-opacity-50',
             'style': 'height: 2.75rem; box-sizing: border-box;'
@@ -62,11 +67,11 @@ class OrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = (
+        fields = [
             'buyer_surname',
             'buyer_name',
             'buyer_middlename',
             'comment',
             'delivery_address',
             'delivery_type'
-        )
+        ]

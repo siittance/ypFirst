@@ -38,7 +38,23 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shop',
+    'apishop',
+    'basket',
+    'rest_framework',
 ]
+BASKET_SESSION_ID = 'basket'
+LOGIN_URL = '/login/'
+SESSION_COOKIE_AGE = 86400
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT' : "%Y-%m-%d %H:%M:%S.%f%z",
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

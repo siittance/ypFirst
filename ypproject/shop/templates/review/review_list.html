@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Список отзывов{% endblock %}
+
+{% block content %}
+<h2>Отзывы</h2>
+<a href="{% url 'review_create' %}" class="btn btn-primary">Добавить отзыв</a>
+<div class="review-list">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Товар</th>
+                <th>Рейтинг</th>
+                <th>Дата создания</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in reviews %}
+                <tr>
+                    <td>{{ review.user }}</td>
+                    <td>{{ review.catalog }}</td>
+                    <td>{{ review.rating }}/5</td>
+                    <td>{{ review.created_at }}</td>
+                    <td>
+                        <a href="{% url 'review_detail' review.pk %}" class="btn btn-primary">Просмотр</a>
+                        <a href="{% url 'review_update' review.pk %}" class="btn btn-secondary">Редактировать</a>
+                        <a href="{% url 'review_delete' review.pk %}" class="btn btn-danger">Удалить</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">Нет отзывов.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,18 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class User(models.Model):
-    user_login = models.CharField(max_length=25)
-    user_password = models.CharField(max_length=350)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=11, unique=True)
 
-    def __str__(self):
-        return self.user_login
-
-    class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
-        ordering = ['user_login']
 
 class ProductCategory(models.Model):
     category_name = models.CharField(max_length=25)
@@ -55,13 +44,31 @@ class Catalog(models.Model):
         ordering = ['product_name']
 
 class Order(models.Model):
-    order_number = models.IntegerField(unique=True)
-    sum_bill = models.DecimalField(max_digits=10, decimal_places=2)
+    STATUS_CHOICES = [
+        ('pending', 'Ожидает'),
+        ('completed', 'Завершен'),
+        ('canceled', 'Отменен'),
+    ]
+
+    TYPE_DELIVERY = [
+        ('pickup', 'Самовывоз'),
+        ('courier', 'Курьер'),
+        ('post', 'Почта'),
+    ]
+
+    delivery_type = models.CharField(max_length=10, choices=TYPE_DELIVERY, default='pickup')
+    sum_bill = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     date_order = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    buyer_surname = models.CharField(max_length=50, default='Неизвестно')
+    buyer_name = models.CharField(max_length=50, null=True, blank=True)
+    buyer_middlename = models.CharField(max_length=50, blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+    delivery_address = models.CharField(max_length=250, default='Неизвестно')
 
     def __str__(self):
-        return f"Order #{self.order_number}"
+        return f"Order #{self.id} - {self.status}"
 
     class Meta:
         verbose_name = 'Заказ'
@@ -70,11 +77,11 @@ class Order(models.Model):
 
 class PosOrder(models.Model):
     catalog = models.ForeignKey(Catalog, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    count = models.IntegerField()
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    count = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.catalog} x {self.count}"
+        return f"{self.catalog.product_name} x {self.count}"
 
     class Meta:
         verbose_name = 'Позиция заказа'

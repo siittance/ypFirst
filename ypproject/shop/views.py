@@ -1,9 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import login, logout
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import User, ProductCategory, Magazine, Catalog, Order, PosOrder, Cart, Review, Promotion
-from .forms import UserForm, ProductCategoryForm, MagazineForm, CatalogForm, OrderForm, PosOrderForm, CartForm, ReviewForm, PromotionForm
+from .forms import ProductCategoryForm, MagazineForm, CatalogForm, PosOrderForm, CartForm, \
+    ReviewForm, PromotionForm, RegistrationForm, LoginForm
+from basket.forms import OrderForm
+
 
 def first_view(request):
     products = Catalog.objects.all()
@@ -66,46 +70,7 @@ class UserDetailView(DetailView):
     template_name = 'user/user_detail.html'
     context_object_name = 'user'
 
-class UserCreateView(CreateView):
-    model = User
-    form_class = UserForm
-    template_name = 'user/user_form.html'
-    success_url = reverse_lazy('user_list')
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, 'Пользователь успешно создан!')
-        return response
-
-    def form_invalid(self, form):
-        messages.error(self.request, 'Ошибка при создании пользователя.')
-        return super().form_invalid(form)
-
-class UserUpdateView(UpdateView):
-    model = User
-    form_class = UserForm
-    template_name = 'user/user_form.html'
-    success_url = reverse_lazy('user_list')
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, 'Пользователь успешно обновлен!')
-        return response
-
-    def form_invalid(self, form):
-        messages.error(self.request, 'Ошибка при обновлении пользователя.')
-        return super().form_invalid(form)
-
-class UserDeleteView(DeleteView):
-    model = User
-    template_name = 'user/user_confirm_delete.html'
-    success_url = reverse_lazy('user_list')
-    context_object_name = 'user'
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, 'Пользователь успешно удален!')
-        return response
 
 class ProductCategoryListView(ListView):
     model = ProductCategory
@@ -514,3 +479,32 @@ class PromotionDeleteView(DeleteView):
         response = super().form_valid(form)
         messages.success(self.request, 'Акция успешно удалена!')
         return response
+
+def login_user(request):
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            if request.GET.get('next'):
+                return redirect(request.GET.get('next'))
+            return redirect('catalog_product_list_view')
+    else:
+        form = LoginForm()
+    return render(request, 'auth/login.html', context={'form': form})
+
+
+def registration_user(request):
+    if request.method == 'POST':
+        form = RegistrationForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.save())
+            if request.GET.get('next'):
+                return redirect(request.GET.get('next'))
+            return redirect('catalog_product_list_view')
+    else:
+        form = RegistrationForm()
+    return render(request, 'auth/registration.html', context={'form': form})
+
+def logout_user(request):
+    logout(request)
+    return redirect('catalog_product_list_view')

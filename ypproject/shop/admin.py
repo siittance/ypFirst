@@ -5,10 +5,7 @@ from .models import (
 )
 
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('user_login', 'email', 'phone_number')
-    search_fields = ('user_login', 'email', 'phone_number')
+
 
 
 @admin.register(ProductCategory)
@@ -33,7 +30,7 @@ class CatalogAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('order_number', 'sum_bill', 'date_order', 'user')
+    list_display = ('sum_bill', 'date_order', 'user')
     list_filter = ('date_order',)
     search_fields = ('order_number', 'user__user_login')
 

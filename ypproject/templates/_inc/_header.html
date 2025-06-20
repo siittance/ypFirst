@@ -16,11 +16,10 @@
             {% endfor %}
         </div>
     </div>
-    <a href="{% url 'basket_view' %}">Корзина</a>
+    <a href="{% url 'basket_detail' %}">Корзина</a>
     <div class="dropdown">
         <span class="dropbtn">CRUD</span>
         <div class="dropdown-content">
-            <a href="{% url 'user_list' %}">Пользователи</a>
             <a href="{% url 'product_category_list' %}">Категории</a>
             <a href="{% url 'magazine_list' %}">Магазины</a>
             <a href="{% url 'catalog_list' %}">Товары</a>

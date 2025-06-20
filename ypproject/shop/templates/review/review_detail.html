@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Детали отзыва{% endblock %}
+
+{% block content %}
+<h2>Детали отзыва</h2>
+<div class="review-detail">
+    <p><strong>Пользователь:</strong> {{ review.user }}</p>
+    <p><strong>Товар:</strong> {{ review.catalog }}</p>
+    <p><strong>Рейтинг:</strong> {{ review.rating }}/5</p>
+    <p><strong>Текст отзыва:</strong> {{ review.review_text|default:"Нет текста" }}</p>
+    <p><strong>Дата создания:</strong> {{ review.created_at }}</p>
+    <a href="{% url 'review_update' review.pk %}" class="btn btn-secondary">Редактировать</a>
+    <a href="{% url 'review_delete' review.pk %}" class="btn btn-danger">Удалить</a>
+    <a href="{% url 'review_list' %}" class="btn btn-primary">Назад</a>
+</div>
+{% endblock %}

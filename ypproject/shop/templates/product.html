@@ -6,19 +6,30 @@
 <h2>Товары</h2>
 <div class="product-list">
     {% if products %}
-        {% for product in products %}
-            <div class="product-item">
-                <h3>{{ product.product_name }}</h3>
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.product_name }}" style="max-width: 150px;">
-                {% endif %}
-                <p class="description">{{ product.product_description|truncatechars:150|default:"Нет описания" }}</p>
-                <p class="price">{{ product.product_price }} ₽</p>
-                <a class="details-link" href="{% url 'product_detail' product.pk %}">Подробнее</a>
-            </div>
-        {% endfor %}
+    {% for product in products %}
+    <div class="product-item">
+        <h3>{{ product.product_name }}</h3>
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.product_name }}" style="max-width: 150px;">
+        {% endif %}
+        <p class="description">{{ product.product_description|truncatechars:150|default:"Нет описания" }}</p>
+        <p class="price">{{ product.product_price }} ₽</p>
+
+        <div class="buttons">
+            <a class="details-link" href="{% url 'product_detail' product.pk %}">Подробнее</a>
+
+            <form method="post" action="{% url 'basket_add' product.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="count" value="1">
+                <input type="hidden" name="reload" value="False">
+                <button type="submit">Добавить в корзину</button>
+            </form>
+        </div>
+
+    </div>
+    {% endfor %}
     {% else %}
-        <p>Товары отсутствуют.</p>
+    <p>Товары отсутствуют.</p>
     {% endif %}
 </div>
 {% endblock %}

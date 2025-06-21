@@ -18,7 +18,6 @@
     </div>
     <a href="{% url 'basket_detail' %}">Корзина</a>
 
-    <!-- Показываем CRUD только админам -->
     {% if user.is_superuser %}
     <div class="dropdown">
         <span class="dropbtn">CRUD</span>

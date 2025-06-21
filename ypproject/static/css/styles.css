@@ -187,8 +187,8 @@ footer {
 }
 
 .container img {
-    max-width: 20px;
-    max-height: 20px;
+    max-width: 350px;
+    max-height: 350px;
     object-fit: contain;
 }
 
@@ -300,8 +300,8 @@ textarea:focus {
         padding: 0.5rem 1rem;
     }
     .container img {
-        max-width: 16px;
-        max-height: 16px;
+        max-width: 160px;
+        max-height: 160px;
     }
     .table {
         font-size: 0.75rem;

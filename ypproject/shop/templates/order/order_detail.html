@@ -6,44 +6,45 @@
 <div class="container mx-auto px-4 py-6 max-w-4xl">
     <h2 class="text-2xl font-bold mb-6 text-orange-500">Детали заказа #{{ order.id }}</h2>
 
-    <div class="bg-gray-800 rounded-lg p-6 mb-6 border border-gray-700">
-        <h3 class="text-xl font-semibold mb-4 text-white">Основная информация</h3>
+    <!-- Основная информация -->
+    <div class="bg-gray-800 rounded-xl p-6 mb-6 border border-gray-700 shadow-md">
+        <h3 class="text-xl font-semibold mb-6 text-white border-b border-gray-700 pb-2">Основная информация</h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
             <div>
-                <p class="text-gray-400">Номер заказа:</p>
-                <p class="text-white">{{ order.id }}</p>
+                <p class="text-gray-400 mb-1">Номер заказа</p>
+                <p class="text-white font-medium text-base">#{{ order.id }}</p>
             </div>
             <div>
-                <p class="text-gray-400">Статус:</p>
-                <p class="text-white">{{ order.get_status_display }}</p>
+                <p class="text-gray-400 mb-1">Статус</p>
+                <p class="text-white font-medium">{{ order.get_status_display }}</p>
             </div>
             <div>
-                <p class="text-gray-400">Сумма:</p>
-                <p class="text-white">{{ order.sum_bill }} ₽</p>
+                <p class="text-gray-400 mb-1">Сумма</p>
+                <p class="text-orange-400 font-bold">{{ order.sum_bill }} ₽</p>
             </div>
             <div>
-                <p class="text-gray-400">Дата создания:</p>
+                <p class="text-gray-400 mb-1">Дата создания</p>
                 <p class="text-white">{{ order.date_order|date:"d.m.Y H:i" }}</p>
             </div>
             <div>
-                <p class="text-gray-400">Тип доставки:</p>
+                <p class="text-gray-400 mb-1">Тип доставки</p>
                 <p class="text-white">{{ order.get_delivery_type_display }}</p>
             </div>
             <div>
-                <p class="text-gray-400">Адрес доставки:</p>
+                <p class="text-gray-400 mb-1">Адрес доставки</p>
                 <p class="text-white">{{ order.delivery_address }}</p>
             </div>
         </div>
 
-        <div class="mb-4">
-            <p class="text-gray-400">Комментарий:</p>
-            <p class="text-white">{{ order.comment|default:"-" }}</p>
+        <div class="mt-6">
+            <p class="text-gray-400 mb-1">Комментарий</p>
+            <p class="text-white italic">{{ order.comment|default:"—" }}</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div>
-                <p class="text-gray-400">Покупатель:</p>
+                <p class="text-gray-400 mb-1">Покупатель</p>
                 <p class="text-white">
                     {{ order.buyer_surname }}
                     {{ order.buyer_name|default:"" }}
@@ -51,45 +52,48 @@
                 </p>
             </div>
             <div>
-                <p class="text-gray-400">Пользователь:</p>
+                <p class="text-gray-400 mb-1">Пользователь</p>
                 <p class="text-white">{{ order.user }}</p>
             </div>
         </div>
     </div>
 
-    <div class="bg-gray-800 rounded-lg p-6 mb-6 border border-gray-700">
-        <h3 class="text-xl font-semibold mb-4 text-white">Позиции заказа</h3>
+    <!-- Позиции заказа -->
+    <div class="bg-gray-800 rounded-xl p-6 mb-6 border border-gray-700 shadow-md">
+        <h3 class="text-xl font-semibold mb-4 text-white border-b border-gray-700 pb-2">Позиции заказа</h3>
 
         {% if order.items.all %}
         <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+            <table class="w-full text-sm table-auto">
                 <thead class="bg-gray-900 text-gray-300">
                     <tr>
-                        <th class="p-2 text-left">Товар</th>
-                        <th class="p-2 text-right">Цена</th>
-                        <th class="p-2 text-right">Кол-во</th>
-                        <th class="p-2 text-right">Сумма</th>
+                        <th class="p-3 text-left">Товар</th>
+                        <th class="p-3 text-right">Цена</th>
+                        <th class="p-3 text-right">Кол-во</th>
+                        <th class="p-3 text-right">Сумма</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in order.items.all %}
-                    <tr class="border-t border-gray-700">
-                        <td class="p-2 text-white">
+                    <tr class="border-t border-gray-700 hover:bg-gray-700/30">
+                        <td class="p-3 text-white">
                             {{ item.catalog.product_name }}
                             {% if item.catalog.product_category %}
-                            <span class="text-gray-400 text-xs">({{ item.catalog.product_category }})</span>
+                            <span class="text-gray-400 text-xs block">{{ item.catalog.product_category }}</span>
                             {% endif %}
                         </td>
-                        <td class="p-2 text-right text-white">{{ item.catalog.product_price }} ₽</td>
-                        <td class="p-2 text-right text-white">{{ item.count }}</td>
-                        <td class="p-2 text-right text-orange-400">{{ item.catalog.product_price }} ₽</td>
+                        <td class="p-3 text-right text-white">{{ item.catalog.product_price }} ₽</td>
+                        <td class="p-3 text-right text-white">{{ item.count }}</td>
+                        <td class="p-3 text-right text-orange-400 font-semibold">
+                            {{ item.catalog.product_price|floatformat:2|add:""|floatformat:2|add:""|floatformat:2 }} ₽
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
                 <tfoot class="bg-gray-900 font-semibold">
                     <tr>
-                        <td colspan="3" class="p-2 text-right text-gray-300">Итого:</td>
-                        <td class="p-2 text-right text-orange-400">{{ order.sum_bill }} ₽</td>
+                        <td colspan="3" class="p-3 text-right text-gray-300">Итого:</td>
+                        <td class="p-3 text-right text-orange-400">{{ order.sum_bill }} ₽</td>
                     </tr>
                 </tfoot>
             </table>
@@ -99,16 +103,11 @@
         {% endif %}
     </div>
 
+    <!-- Действия -->
     <div class="flex flex-wrap gap-2">
-        <a href="{% url 'order_update' order.pk %}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
-            Редактировать
-        </a>
-        <a href="{% url 'order_delete' order.pk %}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
-            Удалить
-        </a>
-        <a href="{% url 'order_list' %}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition">
-            Назад к списку
-        </a>
+        <a href="{% url 'order_update' order.pk %}" class="btn btn-secondary">Редактировать</a>
+        <a href="{% url 'order_delete' order.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'order_list' %}" class="btn btn-primary">Назад к списку</a>
     </div>
 </div>
 {% endblock %}

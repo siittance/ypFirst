@@ -10,7 +10,7 @@
     <div class="product-item">
         <h3>{{ product.product_name }}</h3>
         {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.product_name }}" style="max-width: 150px;">
+        <img src="{{ product.image.url }}" alt="{{ product.product_name }}" style="max-width: 600px;">
         {% endif %}
         <p class="description">{{ product.product_description|truncatechars:150|default:"Нет описания" }}</p>
         <p class="price">{{ product.product_price }} ₽</p>
